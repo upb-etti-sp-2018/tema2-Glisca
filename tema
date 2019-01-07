@@ -1,0 +1,23 @@
+T=40;
+f=1/T;
+t=-3*T:0.004:3*T;
+D=7;
+N=50;
+x0=square(2*pi*f*t,D);  %semnal initial
+functie=@(t)square(2*pi*f*t,D);
+cc=1/T*integral(x0,0,T); %componenta continua
+Ck=zeros(1,N);  
+Ak=zeros(1,N);
+SemnalNou=0;
+for (k=1:1:N)
+   x1=@(t)square(2*pi*f*t,D).*exp(-2*pi*f*t*1j*(k-25));
+   Ck(k)=1/T*integral(x1,0,T);
+   Ak(k+1)=2*abs(Ck(k));
+   SemnalNou=SemnalNou+Ck(k)*exp(2*pi*f*t*1j*(k-25));
+end
+figure(1);
+plot(t,SemnalNou,t,x);
+figure(2)
+Ak(26)=abs(cc);
+Ak(1)=Ak(51);
+stem([0:N],Ak);
